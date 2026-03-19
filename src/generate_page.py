@@ -4,7 +4,7 @@ from extract_title import *
 import os
 
 
-def generate_page(from_path , template_path , dest_path):
+def generate_page(from_path , template_path , dest_path ,basepath):
     print (f'Generating page from {from_path} to {dest_path} using {template_path}')
 
     folder_name = os.path.dirname(dest_path)
@@ -23,8 +23,8 @@ def generate_page(from_path , template_path , dest_path):
 
     template_content = template_content.replace("{{ Content }}" , html)
     template_content = template_content.replace("{{ Title }}" , title)
-    template_content = template_content.replace('href="/' , f'href="{dest_path}')
-    template_content = template_content.replace('src="/' , f'href="{dest_path}' )
+    template_content = template_content.replace('href="/' , f'href="{basepath}')
+    template_content = template_content.replace('src="/' , f'src="{basepath}' )
 
 
 
@@ -33,7 +33,7 @@ def generate_page(from_path , template_path , dest_path):
         html_file.close()
 
 
-def generate_page_recursive(dir_path_content , template_path , dest_dir_path):
+def generate_page_recursive(dir_path_content , template_path , dest_dir_path , basepath):
         def md_files_extract(dir_path_content , dest_dir_path):
             content_files = os.listdir(dir_path_content)
             for content in content_files:
@@ -41,7 +41,7 @@ def generate_page_recursive(dir_path_content , template_path , dest_dir_path):
                 destination_path = os.path.join(dest_dir_path , content)
                 if os.path.isfile(content_path) and content.endswith(".md"):
                     destination_path = destination_path.replace(".md" , ".html")
-                    generate_page(content_path , template_path , destination_path)
+                    generate_page(content_path , template_path , destination_path , basepath)
                 elif os.path.isdir(content_path):
                     if not os.path.isdir(destination_path):
                         os.makedirs(destination_path , exist_ok=True)

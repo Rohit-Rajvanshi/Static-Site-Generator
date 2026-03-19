@@ -10,6 +10,6 @@ def main():
         basepath = "/"
     
     copy_static("static" , "docs")
-    generate_page_recursive("content" , "template.html" , basepath)
+    generate_page_recursive("content" , "template.html" , "docs" , basepath)
   
 main()
