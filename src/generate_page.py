@@ -3,6 +3,7 @@ from htmlnode import *
 from extract_title import *
 import os
 
+
 def generate_page(from_path , template_path , dest_path):
     print (f'Generating page from {from_path} to {dest_path} using {template_path}')
 
@@ -22,6 +23,10 @@ def generate_page(from_path , template_path , dest_path):
 
     template_content = template_content.replace("{{ Content }}" , html)
     template_content = template_content.replace("{{ Title }}" , title)
+    template_content = template_content.replace('href="/' , f'href="{dest_path}')
+    template_content = template_content.replace('src="/' , f'href="{dest_path}' )
+
+
 
     with open(dest_path , "w") as html_file:
         html_file.write(template_content)
@@ -39,7 +44,7 @@ def generate_page_recursive(dir_path_content , template_path , dest_dir_path):
                     generate_page(content_path , template_path , destination_path)
                 elif os.path.isdir(content_path):
                     if not os.path.isdir(destination_path):
-                        os.mkdir(destination_path)
+                        os.makedirs(destination_path , exist_ok=True)
                     md_files_extract(content_path , destination_path)
         md_files_extract(dir_path_content , dest_dir_path)
 
